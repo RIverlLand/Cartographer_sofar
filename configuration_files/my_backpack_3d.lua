@@ -27,7 +27,7 @@ options = {
   use_odometry = false,
   use_nav_sat = false,
   use_landmarks = false,
-  num_laser_scans = 0,
+  num_laser_scans = 1,
   num_multi_echo_laser_scans = 0,
   num_subdivisions_per_laser_scan = 1,
   num_point_clouds = 1,
@@ -47,6 +47,12 @@ TRAJECTORY_BUILDER_3D.num_accumulated_range_data = 8
 
 
 MAP_BUILDER.use_trajectory_builder_3d = true
+--TRAJECTORY_BUILDER_3D.ceres_scan_matcher.occupied_space_weight=1e3
+TRAJECTORY_BUILDER_3D.ceres_scan_matcher.translation_weight=1e1
+TRAJECTORY_BUILDER_3D.ceres_scan_matcher.rotation_weight=3e2
+--TRAJECTORY_BUILDER_3D.imu_gravity_time_constant=1e-1
+
+
 MAP_BUILDER.num_background_threads = 7
 POSE_GRAPH.optimization_problem.huber_scale = 5e2
 POSE_GRAPH.optimize_every_n_nodes = 320
@@ -55,4 +61,15 @@ POSE_GRAPH.optimization_problem.ceres_solver_options.max_num_iterations = 10
 POSE_GRAPH.constraint_builder.min_score = 0.62
 POSE_GRAPH.constraint_builder.global_localization_min_score = 0.66
 
+POSE_GRAPH.optimization_problem.huber_scale = 1e2
+POSE_GRAPH.optimize_every_n_nodes = 35
+POSE_GRAPH.constraint_builder.min_score = 0.75
+POSE_GRAPH.constraint_builder.loop_closure_translation_weight = 1.
+POSE_GRAPH.constraint_builder.loop_closure_rotation_weight = 0.1
+POSE_GRAPH.matcher_translation_weight = 1.
+POSE_GRAPH.matcher_rotation_weight = 0.1
+POSE_GRAPH.optimization_problem.local_slam_pose_translation_weight = 1. 
+POSE_GRAPH.optimization_problem.local_slam_pose_rotation_weight = 0.1
+POSE_GRAPH.optimization_problem.odometry_translation_weight = 1. 
+POSE_GRAPH.optimization_problem.odometry_rotation_weight = 0.05
 return options

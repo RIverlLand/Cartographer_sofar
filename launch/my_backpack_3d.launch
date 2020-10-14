@@ -26,8 +26,8 @@
           -configuration_directory $(find cartographer_ros)/configuration_files
           -configuration_basename my_backpack_3d.lua"
       output="screen">
-    <!--remap from="points2_1" to="scan" />
-    <remap from="ts_cloud" to="ts_cloud" /-->
+    <!--remap from="scan" to="scan" /-->
+    <remap from="points2" to="ts_cloud" />
   </node>
 
   <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
