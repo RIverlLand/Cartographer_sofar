@@ -42,34 +42,32 @@ options = {
   landmarks_sampling_ratio = 1.,
 }
 
-TRAJECTORY_BUILDER_3D.num_accumulated_range_data = 8
+TRAJECTORY_BUILDER_3D.num_accumulated_range_data = 8  --larger the number is, accurater the map get but slower, last adjust?
+
+TRAJECTORY_BUILDER_3D.min_range = 0.3
+TRAJECTORY_BUILDER_3D.max_range = 5
+
+--MAP_BUILDER.use_trajectory_builder_2d = true  --robot gone mad but map shows up
+MAP_BUILDER.use_trajectory_builder_3d = true --the trajectory is obviously wrong
+
+--TRAJECTORY_BUILDER_3D.voxel_filter_size = 5e-2  --smaller the accurater
 
 
-
-MAP_BUILDER.use_trajectory_builder_3d = true
---TRAJECTORY_BUILDER_3D.ceres_scan_matcher.occupied_space_weight=1e3
-TRAJECTORY_BUILDER_3D.ceres_scan_matcher.translation_weight=1e1
-TRAJECTORY_BUILDER_3D.ceres_scan_matcher.rotation_weight=3e2
+TRAJECTORY_BUILDER_3D.ceres_scan_matcher.translation_weight = 1e-9  --The bigger the weight of a source of data is, the more emphasis Cartographer will put on this source of data when doing scan matching
+TRAJECTORY_BUILDER_3D.ceres_scan_matcher.rotation_weight = 1e-9
 --TRAJECTORY_BUILDER_3D.imu_gravity_time_constant=1e-1
 
+--TRAJECTORY_BUILDER_3D.ceres_scan_matcher.ceres_solver_options.use_nonmonotonic_steps = true  --?
+--TRAJECTORY_BUILDER_3D.ceres_scan_matcher.ceres_solver_options.max_num_iterations = 100
+--TRAJECTORY_BUILDER_3D.ceres_scan_matcher.ceres_solver_options.num_threads = 1  --didn't really help
 
-MAP_BUILDER.num_background_threads = 7
-POSE_GRAPH.optimization_problem.huber_scale = 5e2
-POSE_GRAPH.optimize_every_n_nodes = 320
-POSE_GRAPH.constraint_builder.sampling_ratio = 0.03
-POSE_GRAPH.optimization_problem.ceres_solver_options.max_num_iterations = 10
-POSE_GRAPH.constraint_builder.min_score = 0.62
-POSE_GRAPH.constraint_builder.global_localization_min_score = 0.66
+TRAJECTORY_BUILDER_3D.use_online_correlative_scan_matching = true
+TRAJECTORY_BUILDER_3D.real_time_correlative_scan_matcher.linear_search_window = 0.1
+--TRAJECTORY_BUILDER_3D.real_time_correlative_scan_matcher.angular_search_window = 120
+TRAJECTORY_BUILDER_3D.real_time_correlative_scan_matcher.translation_delta_cost_weight = 1e-9
+TRAJECTORY_BUILDER_3D.real_time_correlative_scan_matcher.rotation_delta_cost_weight = 1e-9
 
-POSE_GRAPH.optimization_problem.huber_scale = 1e2
-POSE_GRAPH.optimize_every_n_nodes = 35
-POSE_GRAPH.constraint_builder.min_score = 0.75
-POSE_GRAPH.constraint_builder.loop_closure_translation_weight = 1.
-POSE_GRAPH.constraint_builder.loop_closure_rotation_weight = 0.1
-POSE_GRAPH.matcher_translation_weight = 1.
-POSE_GRAPH.matcher_rotation_weight = 0.1
-POSE_GRAPH.optimization_problem.local_slam_pose_translation_weight = 1. 
-POSE_GRAPH.optimization_problem.local_slam_pose_rotation_weight = 0.1
-POSE_GRAPH.optimization_problem.odometry_translation_weight = 1. 
-POSE_GRAPH.optimization_problem.odometry_rotation_weight = 0.05
+TRAJECTORY_BUILDER_3D.submaps.num_range_data = 8  --used by global SLAM to fix the drift of local map
+
+
 return options
